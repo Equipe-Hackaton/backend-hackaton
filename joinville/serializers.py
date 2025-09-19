@@ -28,6 +28,7 @@ class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = '__all__'
+        depth = 1
 
 
 class FotosEventoSerializer(serializers.ModelSerializer):

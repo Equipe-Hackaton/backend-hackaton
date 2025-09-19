@@ -8,6 +8,9 @@ from joinville.views import (
     DenunciaViewSet, FavoritoViewSet
 )
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 router = DefaultRouter()
 router.register(r'empresas', EmpresaViewSet)
 router.register(r'categorias', CategoriaViewSet)
@@ -24,3 +27,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('', lambda request: redirect('/api/')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
