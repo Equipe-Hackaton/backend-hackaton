@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "gaSombrio", email = "sombrio.ga@gmail.com"},
 ]
-dependencies = ["django>=5.2.5"]
+dependencies = ["django>=5.2.6", "pillow>=11.3.0", "djangorestframework>=3.16.1", "django-cors-headers>=4.8.0"]
 requires-python = "==3.10.*"
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,3 +13,15 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.scripts]
+dev = "python manage.py runserver"
+runserver = "python manage.py runserver"
+createsuperuser = "python manage.py createsuperuser"
+migrate = "python manage.py migrate"
+makemigrations = "python manage.py makemigrations"
+shell = "python manage.py shell"
+test = "python manage.py test"
+startapp = "python manage.py startapp {args}"
+loaddata = "python manage.py loaddata {args}"
+dumpdata = "python manage.py dumpdata {args}"
