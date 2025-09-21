@@ -18,11 +18,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Nossos Apps
+   
     'joinville',
-    # Apps de Terceiros
+
     'rest_framework',
-    'rest_framework_simplejwt', # <-- ADICIONADO
+    'rest_framework_simplejwt', 
     'corsheaders',
 ]
 
