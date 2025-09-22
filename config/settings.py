@@ -2,6 +2,8 @@
 
 from pathlib import Path
 import os
+from datetime import timedelta
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -103,4 +105,8 @@ REST_FRAMEWORK = {
         # Views que precisam ser abertas (como registro) devem anular isso.
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
