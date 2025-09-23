@@ -84,5 +84,17 @@ class DenunciaViewSet(viewsets.ModelViewSet):
     serializer_class = DenunciaSerializer
 
 class FavoritoViewSet(viewsets.ModelViewSet):
-    queryset = Favorito.objects.all()
     serializer_class = FavoritoSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Favorito.objects.filter(usuario=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
+
+    @action(detail=True, methods=["delete"])
+    def remove(self, request, pk=None):
+        favorito = self.get_object()
+        favorito.delete()
+        return Response({"detail": "Favorito removido"}, status=status.HTTP_204_NO_CONTENT)

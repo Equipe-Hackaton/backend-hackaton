@@ -26,7 +26,7 @@ router.register(r'fotos-eventos', FotosEventoViewSet)
 router.register(r'comentarios', ComentarioViewSet)
 router.register(r'avaliacoes', AvaliacaoViewSet)
 router.register(r'denuncias', DenunciaViewSet)
-router.register(r'favoritos', FavoritoViewSet)
+router.register(r'favoritos', FavoritoViewSet, basename='favorito')
 
 urlpatterns = [
     path('admin/', admin.site.urls),          
