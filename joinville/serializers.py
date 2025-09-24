@@ -76,6 +76,8 @@ class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = '__all__'
+        read_only_fields = ['empresa']  # 🔑 Empresa será preenchida pelo perform_create
+
 
 class FotosEventoSerializer(serializers.ModelSerializer):
     class Meta:
