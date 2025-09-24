@@ -9,27 +9,27 @@ class Usuario(AbstractUser):
         USUARIO = 'USUARIO', 'Usuário'
         EMPRESA = 'EMPRESA', 'Empresa'
 
-    # Campos comuns
     email = models.EmailField(unique=True)
     tipo_usuario = models.CharField(max_length=10, choices=TipoUsuario.choices, default=TipoUsuario.USUARIO)
-
-    # Campos específicos de Empresa (podem ser nulos para usuários normais)
     nome_empresa = models.CharField(max_length=200, blank=True, null=True)
     cnpj = models.CharField(
-        max_length=14,
-        unique=True,
-        null=True,
-        blank=True,
+        max_length=14, unique=True, null=True, blank=True,
         validators=[RegexValidator(r'^\d{14}$', 'CNPJ deve conter 14 dígitos.')]
     )
     telefone = models.CharField(max_length=20, blank=True, null=True)
+
+    # --- CAMPOS QUE FALTAVAM ---
+    descricao = models.TextField(blank=True, null=True)
+    avatar = models.ImageField(upload_to="usuarios/avatares/", blank=True, null=True)
+    data_nascimento = models.DateField(blank=True, null=True)
+    interesses = models.JSONField(blank=True, null=True)
+    # ---------------------------
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
-
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=200)

@@ -48,9 +48,15 @@ class EmpresaRegisterSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        # Lista os campos que podem ser exibidos publicamente (sem senha!)
-        fields = ['id', 'username', 'email', 'first_name', 'tipo_usuario', 'nome_empresa', 'cnpj', 'telefone']
-
+        # Adiciona os novos campos
+        fields = [
+            'id', 'username', 'email', 'first_name', 'tipo_usuario',
+            'nome_empresa', 'cnpj', 'telefone', 'descricao', 'avatar',
+            'data_nascimento', 'interesses'
+        ]
+        # Garante que campos sensíveis não possam ser alterados via API
+        read_only_fields = ['email', 'tipo_usuario']
+# ------------------------------------
 
 # Serializers existentes (sem mudanças, mas mantidos para clareza)
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -58,11 +64,18 @@ class CategoriaSerializer(serializers.ModelSerializer):
         model = Categoria
         fields = '__all__'
 
+class EventoReadSerializer(serializers.ModelSerializer):
+    categoria = CategoriaSerializer()
+    empresa = UsuarioSerializer()
+
+    class Meta:
+        model = Evento
+        fields = '__all__'
+
 class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = '__all__'
-        depth = 1 # Opcional: mostra detalhes dos objetos relacionados
 
 class FotosEventoSerializer(serializers.ModelSerializer):
     class Meta:
