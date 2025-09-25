@@ -1,43 +1,47 @@
+# joinville/models.py
 
 from django.db import models
-from django.core.validators import (
-    RegexValidator, MinValueValidator, MaxValueValidator, FileExtensionValidator
-)
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator, FileExtensionValidator, MinValueValidator, MaxValueValidator
 
+class Usuario(AbstractUser):
+    class TipoUsuario(models.TextChoices):
+        USUARIO = 'USUARIO', 'Usuário'
+        EMPRESA = 'EMPRESA', 'Empresa'
 
-class Empresa(models.Model):
-    nome = models.CharField(max_length=200)
+    email = models.EmailField(unique=True)
+    tipo_usuario = models.CharField(max_length=10, choices=TipoUsuario.choices, default=TipoUsuario.USUARIO)
+    nome_empresa = models.CharField(max_length=200, blank=True, null=True)
     cnpj = models.CharField(
-        max_length=14,
-        unique=True,
-        validators=[RegexValidator(r'^\d{14}$', 'CNPJ deve conter exatamente 14 dígitos numéricos')]
+        max_length=14, unique=True, null=True, blank=True,
+        validators=[RegexValidator(r'^\d{14}$', 'CNPJ deve conter 14 dígitos.')]
     )
-    email = models.EmailField(max_length=200)
-    telefone = models.CharField(max_length=20)
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+
+    # --- CAMPOS QUE FALTAVAM ---
+    descricao = models.TextField(blank=True, null=True)
+    avatar = models.ImageField(upload_to="usuarios/avatares/", blank=True, null=True)
+    data_nascimento = models.DateField(blank=True, null=True)
+    interesses = models.JSONField(blank=True, null=True)
+    # ---------------------------
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return f"{self.nome} (CNPJ: {self.cnpj})"
-
+        return self.email
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=200)
     descricao = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.nome}"
-
-
-class Usuario(models.Model):
-    nome = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200, unique=True)
-    senha = models.CharField(max_length=200)
-
-    def __str__(self):
-        return f"{self.nome} ({self.email})"
+        return self.nome
 
 
 class Evento(models.Model):
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    # ATUALIZADO: ForeignKey para o novo modelo Usuario, limitado a usuários do tipo EMPRESA
+    empresa = models.ForeignKey(Usuario, on_delete=models.CASCADE, limit_choices_to={'tipo_usuario': 'EMPRESA'})
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
     nome = models.CharField(max_length=200)
     data_inicio = models.DateField()
@@ -57,6 +61,8 @@ class Evento(models.Model):
         return f"{self.nome} ({self.data_inicio.strftime('%d/%m/%Y')} - {self.data_fim.strftime('%d/%m/%Y')})"
 
 
+# --- Outros modelos que usam Usuario são atualizados implicitamente ---
+
 class FotosEvento(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name="fotos")
     foto = models.ImageField(
@@ -75,7 +81,7 @@ class Comentario(models.Model):
     data_comentario = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.usuario.nome} comentou em '{self.evento.nome}' em {self.data_comentario.strftime('%d/%m/%Y %H:%M')}"
+        return f"{self.usuario.username} comentou em '{self.evento.nome}'"
 
 
 class Avaliacao(models.Model):
@@ -88,7 +94,7 @@ class Avaliacao(models.Model):
     data_avaliacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.nota}★ - {self.usuario.nome} em '{self.evento.nome}'"
+        return f"{self.nota}★ - {self.usuario.username} em '{self.evento.nome}'"
 
 
 class Denuncia(models.Model):
@@ -99,7 +105,7 @@ class Denuncia(models.Model):
     data_denuncia = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Denúncia de {self.usuario.nome} no evento '{self.evento.nome}' em {self.data_denuncia.strftime('%d/%m/%Y %H:%M')}"
+        return f"Denúncia de {self.usuario.username} no evento '{self.evento.nome}'"
 
 
 class Favorito(models.Model):
@@ -113,6 +119,4 @@ class Favorito(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.usuario.nome} favoritou '{self.evento.nome}' em {self.data_adicionado.strftime('%d/%m/%Y %H:%M')}"
-
-
+        return f"{self.usuario.username} favoritou '{self.evento.nome}'"
