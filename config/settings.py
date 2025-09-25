@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-50!a#0b7uwqqhehv91@i$boflj%1f#me_p2^i_a+xaaby9fn-#
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://join-villeapi.fabricadesoftware.ifc.edu.br/']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
