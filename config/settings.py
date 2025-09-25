@@ -98,16 +98,18 @@ CORS_ALLOW_ALL_ORIGINS = True # Apenas para desenvolvimento
 
 # ADICIONADO: Configurações do Django REST Framework
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # Define JWT como o padrão de autenticação para a API
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        # Por padrão, endpoints são apenas leitura para anônimos, e escrita para logados.
-        # Views que precisam ser abertas (como registro) devem anular isso.
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
 }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
