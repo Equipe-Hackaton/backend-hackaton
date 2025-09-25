@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:9a74f0193dda772e06e8599d0cad4702c43075da8ffe8806a6d903e61c32fdcf"
+content_hash = "sha256:ac80864433dd8b8ebc37be92e1b7e76b24e1131df9d74d000c7e547ab324b0a5"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -183,4 +183,15 @@ marker = "sys_platform == \"win32\""
 files = [
     {file = "tzdata-2025.2-py2.py3-none-any.whl", hash = "sha256:1a403fada01ff9221ca8044d701868fa132215d84beb92242d9acd2147f667a8"},
     {file = "tzdata-2025.2.tar.gz", hash = "sha256:b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9"},
+]
+
+[[package]]
+name = "whitenoise"
+version = "6.11.0"
+requires_python = ">=3.9"
+summary = "Radically simplified static file serving for WSGI applications"
+groups = ["default"]
+files = [
+    {file = "whitenoise-6.11.0-py3-none-any.whl", hash = "sha256:b2aeb45950597236f53b5342b3121c5de69c8da0109362aee506ce88e022d258"},
+    {file = "whitenoise-6.11.0.tar.gz", hash = "sha256:0f5bfce6061ae6611cd9396a8231e088722e4fc67bc13a111be74c738d99375f"},
 ]
