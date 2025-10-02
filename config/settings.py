@@ -20,9 +20,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-   
     'joinville',
-
+    'channels',
+    'chat',
     'rest_framework',
     'rest_framework_simplejwt', 
     'corsheaders',
@@ -57,7 +57,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -113,3 +112,16 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+
+# Configuração do Channel Layer (use Redis em produção)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+ASGI_APPLICATION = 'config.asgi.application'
