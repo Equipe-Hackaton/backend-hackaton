@@ -66,11 +66,25 @@ class CategoriaSerializer(serializers.ModelSerializer):
 
 class EventoReadSerializer(serializers.ModelSerializer):
     categoria = CategoriaSerializer()
-    empresa = UsuarioSerializer()
+    empresa = serializers.SerializerMethodField()
 
     class Meta:
         model = Evento
         fields = '__all__'
+
+    def get_empresa(self, obj):
+        """
+        Retorna apenas os campos essenciais da empresa, incluindo o id,
+        para garantir que o front consiga iniciar o chat.
+        """
+        if obj.empresa:
+            return {
+                "id": obj.empresa.id,
+                "nome_empresa": obj.empresa.nome_empresa or obj.empresa.username,
+                "avatar": obj.empresa.avatar.url if obj.empresa.avatar else None,
+                "tipo_usuario": obj.empresa.tipo_usuario,
+            }
+        return None
 
 class EventoSerializer(serializers.ModelSerializer):
     class Meta:
