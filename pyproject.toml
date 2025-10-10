@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "gaSombrio", email = "sombrio.ga@gmail.com"},
 ]
-dependencies = ["django>=5.2.6", "pillow>=11.3.0", "djangorestframework>=3.16.1", "django-cors-headers>=4.8.0", "djangorestframework-simplejwt>=5.5.1", "gunicorn>=23.0.0", "whitenoise>=6.11.0"]
+dependencies = ["django>=5.2.7", "pillow>=11.3.0", "djangorestframework>=3.16.1", "django-cors-headers>=4.8.0", "djangorestframework-simplejwt>=5.5.1", "gunicorn>=23.0.0", "whitenoise>=6.11.0", "channels[daphne]>=4.3.1", "channels-redis>=4.3.0"]
 requires-python = "==3.10.*"
 readme = "README.md"
 license = {text = "MIT"}
@@ -21,6 +21,7 @@ without-hashes = "true"
 [tool.pdm.scripts]
 dev = "python manage.py runserver"
 runserver = "python manage.py runserver"
+daphne = { cmd = "python -m daphne.cli --port 8000 --bind 127.0.0.1 config.asgi:application", env = { DJANGO_SETTINGS_MODULE = "config.settings" } }
 createsuperuser = "python manage.py createsuperuser"
 migrate = "python manage.py migrate"
 makemigrations = "python manage.py makemigrations"
